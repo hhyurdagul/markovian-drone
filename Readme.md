@@ -34,7 +34,7 @@ The output is:
 The output appeared fine and nearly perfect because the questions and the code indicated that there was wind at $(15,7)$, and the arrows demonstrated that the wind should be avoided as much as possible to increase the chances of moving uninterruptedly.
 
 #### Question-3
-Recall that a policy $\pi$ is a mapping $\pi : X \rightarrow U$ where $\pi(x)$ specifies the action to be taken should the drone find itself in state $x$. An optimal value function $V^*$ induces an optimal policy $\pi^*$ such that
+Recall that a policy $\pi$ is a mapping $\pi : X \rightarrow U$ where $\pi(x)$ specifies the action to be taken should the drone find itself in state $x$. An optimal value function $V^\*$ induces an optimal policy $\pi^\*$ such that
 ```math
 \pi^*(x) \in \begin{array}{c l}
 	\textrm{argmax} \\
@@ -141,3 +141,20 @@ Same goes for heatmap as well, it nearly does not take storm (it directs to stor
 Same conclusion.
 ##### Experiment-3
 3 Layered Network, stepsize $10^{-3}$, training step 50000 (This took a lot longer):
+
+![](assets/q_learning_experiment-3.png)
+
+![](assets/q_learning_experiment_heatmap-3.png)
+
+Training it more and growing the network did not do well at the opposite it made worse.
+
+Conclusion: My guess as to why Q-learning performed poorly compared to value iteration is that the problem might be too simple to require a network; basic methods might suffice for this straightforward issue.
+
+
+#### Question-9
+Describe a dynamical system or a dataset situation in which using Q-learning could be easier than using value iteration. 
+*Hint: You don’t need to limit the example to the field of robotics.*
+
+
+#### Answer-9
+Since Q-learning employs neural networks to optimally solve problems, it might be more effective in large and stochastic environments compared to value iteration, which uses fixed methods without any dynamic elements like those found in deep learning models. One example could be autonomous driving. In such environments, there are numerous factors to consider, and value iteration might be very slow and computationally cumbersome. Although there are many variables, a neural network can learn patterns that a traditional mathematical function might not capture. Therefore, for very complex problems, Q-learning could be a preferable choice over value iteration. However, for a simpler problem like ours, value iteration might be more suitable.
