@@ -66,6 +66,8 @@ This looked nearly perfect because the route adheres to the heatmap and follows 
 
 Note: To reproduce the same results, run `value_iteration.py`. Although the output of the `value_function` will be the same, the last part may differ (most probably) because it utilizes the probabilities of the value function.
 
+## Q-Learning
+
 ### Question-5
 Given the same environment, sample $10^5$ state transition triples
 
