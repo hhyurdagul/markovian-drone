@@ -8,14 +8,14 @@ The first four questions are about value iteration, and the remaining ones are a
 
 #### Question-1
 Given $n = 20$, $\sigma = 1$, $\gamma = 0.95$, $x_{eye} = (15, 7)$, and $x_{goal} = (19, 9)$, write code that uses value iteration to find the optimal value function for the drone to navigate the storm. Recall that value iteration repeats the Bellman update
-$$
+```math
 \left\{ 
   \begin{array}{c l}
     {R(x, u) + \gamma \sum_{x' \in X} p(x' \mid x, u) V(x')} & \quad \textrm{if } x \textrm{ is not a terminal state}\\
     R(x, u)               & \quad \textrm{otherwise}
   \end{array}
 \right.
-$$
+```
 until convergence, where $p(x'\mid x, u)$ is the probability distribution of the next state being $x'$ after taking action $u$ in state $x$, and $R$ is the reward function.
 
 #### Answer-1
@@ -35,7 +35,7 @@ The output appeared fine and nearly perfect because the questions and the code i
 
 #### Question-3
 Recall that a policy $\pi$ is a mapping $\pi : X \rightarrow U$ where $\pi(x)$ specifies the action to be taken should the drone find itself in state $x$. An optimal value function $V^*$ induces an optimal policy $\pi^*$ such that
-$$
+```math
 \pi^*(x) \in \begin{array}{c l}
 	\textrm{argmax} \\
 	{u \in U}
@@ -43,7 +43,7 @@ $$
 \left\{ 
 	R(x, u) + \gamma \sum_{x' \in X} p(x' \mid x, u) V^*(x')
 \right\}
-$$
+```
 Note that the optimal policy is only defined for non-terminal states. Use the value function you computed in part $(a)$ to compute an optimal policy. Then, use this policy to simulate the MDP starting from $x = (0,0)$ over $N = 100$ time steps.
 
 #### Answer-3
@@ -68,27 +68,29 @@ Note: To reproduce the same results, run `value_iteration.py`. Although the outp
 
 #### Question-5
 Given the same environment, sample $10^5$ state transition triples
-$$
+
+```math
 (x_i,u_i,x'_i) \ \ \ \ \ \ \ \ \ \ \ \forall i \in [1, 10^5]
-$$
+```
 Make sure to generate transition samples with appropriate probability of getting blown off course by the storm. **Important: We are representing the state as a two dimensional vector with the two grid coordinates and the action as a single element vector.** You are free to use your own state and action representation, but another choice might require a significant amount of tuning of the resulting Q-network.
 
 #### Answer-5 
 With the help of some research on the internet and the explanations in the code, I created transition triples. Here is the code for it:
+
 ![](assets/q_learning_code-1.png)
 #### Question-6
 In order to develop the Q-network loss function, we will start by writing down the Bellman equation of the optimal Q-function—our Q-network should aim to approximate that. Write down the expectation form of the optimal Q-function in terms of an equality
-$$
+```math
 Q^*(x, u) = \dots
-$$
+```
 Hint: Your form should not contain the transition probabilities, since we do not know those. 
 Hint: Remember to account for the reward value and whether the state is terminal.
 
 #### Answer-6
 As I understand it, the loss function for Q-learning is similar to that of any regression problem; we can use the MSE (Mean Squared Error) loss function to calculate the loss. Since Q-learning utilizes Q-networks, the output of the network can be input into the MSE function along with the actual answer to calculate the loss. However, in addition to these elements, the prediction should also utilize the Bellman equation (to make it act like the real part?). Therefore, the final form of the error would look like this:
-$$
+```math
 Loss = mean((R + \gamma \textrm{max}_{u'}Q(x',u') - Q(x, u))^2)
-$$
+```
 Here, $R$ is the immediate reward, $\gamma$ is the discount factor, and $Q(s,a)$ are the values predicted by the network.
 Here is the code for the given formula:
 ![](assets/q_learning_code-2.png)
@@ -103,13 +105,14 @@ This is pretty straightforward, here is the code:
 #### Question-8
 Train the neural network filling in the provided Q_learning Python function. Use the Adam optimizer. Experiment with the following step sizes ${10^{-3}, 10^{-2}, 10^{-1}}$ and pick the one that works best. 
 We will now develop the Q-network loss as an L2 penalized equality (1) residual. 
-$$
+```math
 l = \frac 1 n \sum_{i=1}^n ||{LHS}_i - {RHS}_i||_2^2 \ \ \ \ \ \ \forall i \in S_{examples}
-$$
+```
 *Hint: The expectation operator can be silently dropped since we are (1) using a quadratic residual penalty and (2) summing over all of the samples—which is equivalent to taking empirical expectation over data.*
 
 #### Answer-8
 This is also pretty straight forward, since training loop is custom and can not be used by `tf.keras.model.Sequential().fit()` we have to create a training loop using the `tf.GradientTape`. Here is the code:
+
 ![](assets/q_learning_code-4.png)
 
 #### Question-10
